@@ -11,8 +11,8 @@ public class ContentParser {
     @Inject
     public ContentParser(String url, DocumentParser documentParser, DocumentAnalyzer documentAnalyzer) {
         this.url = url;
-        this.documentParser = new DocumentParser(url);
-        this.documentAnalyzer = new DocumentAnalyzer();
+        this.documentParser = documentParser;
+        this.documentAnalyzer = documentAnalyzer;
     }
 
     public AnalyzedDocument getTechnologyKeywords() {
@@ -25,7 +25,6 @@ public class ContentParser {
     }
 
     private void startParsing() {
-        DocumentParser documentParser = new DocumentParser(url);
         parsedDocument = documentParser.parse(url);
     }
 }
