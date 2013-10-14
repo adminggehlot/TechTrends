@@ -11,4 +11,8 @@ public class ParsedDocument {
     public ParsedDocument(Document document) {
         this.document = document;
     }
+
+    public String getTitle() {
+        return document.title();
+    }
 }

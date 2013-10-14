@@ -17,7 +17,7 @@ public class DefaultDocumentParser implements DocumentParser {
     }
 
     @Override
-    public ParsedDocument parse(String url) {
+    public ParsedDocument parse() {
         logger.info("parsing document for url: {}", url);
         checkUrl(url);
 
@@ -26,9 +26,8 @@ public class DefaultDocumentParser implements DocumentParser {
             return new ParsedDocument(document);
         } catch (IOException ioe) {
             logger.error("Error while trying to read the URL", ioe);
+            throw new DocumentParseException("Errpr while trying to read url", ioe);
         }
-
-        return null;
     }
 
     private void checkUrl(String url) {

@@ -25,6 +25,6 @@ public class ContentParser {
     }
 
     private void startParsing() {
-        parsedDocument = documentParser.parse(url);
+        parsedDocument = documentParser.parse();
     }
 }
