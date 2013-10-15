@@ -7,22 +7,23 @@ import org.junit.Test;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
-public class ExtractSinglePostEndToEndTest {
+public class ExtractSinglePostEndToEndIT {
     private String url = "";
     private ContentParser contentParser;
     private DocumentParser documentParser;
-    private DefaultDocumentAnalyzer documentAnalyzer;
+    private DocumentAnalyzerFactory documentAnalyzerFactory;
 
     @Before
     public void setup() {
         documentParser = new DefaultDocumentParser(url);
-        documentAnalyzer = new DefaultDocumentAnalyzer();
+        documentAnalyzerFactory = new DefaultDocumentAnalyzerFactory();
     }
     @Test
     public void extractSinglePostWithValidURL() {
         String url = "https://news.ycombinator.com/item?id=6475879";
-        contentParser = new ContentParser(url, documentParser, documentAnalyzer);
-        AnalyzedDocument technologyKeywords = contentParser.getTechnologyKeywords();
+        documentParser = new DefaultDocumentParser(url);
+        contentParser = new ContentParser(documentParser, documentAnalyzerFactory);
+        AnalyzedDocument technologyKeywords = contentParser.analyzeForTechnologyKeywords();
         assertThat(technologyKeywords, is(notNullValue()));
     }
 }

@@ -1,5 +1,6 @@
 package TechTrends;
 
+import lombok.NonNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
@@ -12,7 +13,7 @@ public class DefaultDocumentParser implements DocumentParser {
 
     private final String url;
 
-    public DefaultDocumentParser(String url) {
+    public DefaultDocumentParser(@NonNull String url) {
         this.url = url;
     }
 
@@ -31,7 +32,7 @@ public class DefaultDocumentParser implements DocumentParser {
     }
 
     private void checkUrl(String url) {
-        if (url == null || url.isEmpty()) {
+        if (url.isEmpty()) {
             throw new IllegalArgumentException();
         }
     }

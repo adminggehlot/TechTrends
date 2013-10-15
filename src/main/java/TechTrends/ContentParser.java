@@ -3,24 +3,23 @@ package TechTrends;
 import javax.inject.Inject;
 
 public class ContentParser {
-    private final String url;
-    private final DocumentAnalyzer documentAnalyzer;
+    private final DocumentAnalyzerFactory documentAnalyzerFactory;
     private final DocumentParser documentParser;
     private ParsedDocument parsedDocument;
 
     @Inject
-    public ContentParser(String url, DocumentParser documentParser, DocumentAnalyzer documentAnalyzer) {
-        this.url = url;
+    public ContentParser(DocumentParser documentParser, DocumentAnalyzerFactory documentAnalyzerFactory) {
         this.documentParser = documentParser;
-        this.documentAnalyzer = documentAnalyzer;
+        this.documentAnalyzerFactory = documentAnalyzerFactory;
     }
 
-    public AnalyzedDocument getTechnologyKeywords() {
+    public AnalyzedDocument analyzeForTechnologyKeywords() {
         if (parsedDocument == null) {
             startParsing();
         }
 
-        AnalyzedDocument technologyKeyWords = documentAnalyzer.analyze(parsedDocument, AnalysisType.TECHNOLOGY_KEYWORDS);
+        DocumentAnalyzer documentAnalyzer = documentAnalyzerFactory.getAnalyzerOfType(AnalysisType.TECHNOLOGY_KEYWORDS);
+        AnalyzedDocument technologyKeyWords = documentAnalyzer.analyze(parsedDocument);
         return technologyKeyWords;
     }
 

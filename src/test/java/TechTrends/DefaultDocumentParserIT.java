@@ -2,12 +2,8 @@ package TechTrends;
 
 import org.junit.Test;
 
-import java.net.UnknownHostException;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 public class DefaultDocumentParserIT {
     @Test
@@ -19,10 +15,10 @@ public class DefaultDocumentParserIT {
         assertThat(parsedDocument.getTitle(), equalTo("Yahoo"));
     }
 
-    @Test (expected = DocumentParseException.class)
+    @Test(expected = DocumentParseException.class)
     public void testNonExistingUrl() {
         String url = "http://www.non-existing-url.in";
         DocumentParser documentParser = new DefaultDocumentParser(url);
-        ParsedDocument parsedDocument = documentParser.parse();
+        documentParser.parse();
     }
 }
