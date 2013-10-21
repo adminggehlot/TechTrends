@@ -18,9 +18,9 @@ public class ContentParser {
             startParsing();
         }
 
-        DocumentAnalyzer documentAnalyzer = documentAnalyzerFactory.getAnalyzerOfType(AnalysisType.TECHNOLOGY_KEYWORDS);
-        AnalyzedDocument technologyKeyWords = documentAnalyzer.analyze(parsedDocument);
-        return technologyKeyWords;
+        DocumentAnalyzer documentAnalyzer = documentAnalyzerFactory.getAnalyzerOfType(AnalysisType.TECHNOLOGY_KEYWORDS, parsedDocument);
+        AnalyzedDocument analyzedDocument = documentAnalyzer.prepareAnalysis();
+        return analyzedDocument;
     }
 
     private void startParsing() {

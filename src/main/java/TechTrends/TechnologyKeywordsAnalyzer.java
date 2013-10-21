@@ -3,31 +3,34 @@ package TechTrends;
 import lombok.NonNull;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class TechnologyKeywordsAnalyzer implements DocumentAnalyzer {
-    private static final String [] TECHNOLOGY_KEYWORDS = {"java", "ruby", "python"};
-    private FrequencyDistribution frequencyDistribution;
+    private static final String[] TECHNOLOGY_KEYWORDS = {"java", "ruby", "python"};
+    private final ParsedDocument parsedDocument;
+    private AnalyzedDocument analyzedDocument;
     List<Post> postsToAnalyze;
 
-    @Override
-    public AnalyzedDocument analyze(@NonNull ParsedDocument parsedDocument) {
-        postsToAnalyze = parsedDocument.fetchTopLevelPosts();
-        return null;
+    public TechnologyKeywordsAnalyzer(@NonNull ParsedDocument parsedDocument) {
+        this.parsedDocument = parsedDocument;
+        this.postsToAnalyze = parsedDocument.fetchTopLevelPosts();
     }
 
     @Override
-    public FrequencyDistribution getKeywordsWithFrequency() {
-        if (frequencyDistribution != null) {
-            return frequencyDistribution;
+    public AnalyzedDocument prepareAnalysis() {
+        if (analyzedDocument != null) {
+            return analyzedDocument;
         }
-        frequencyDistribution = new FrequencyDistribution();
-        for (Post post: postsToAnalyze) {
+        FrequencyDistribution frequencyDistribution = new FrequencyDistribution();
+        for (Post post : postsToAnalyze) {
             FrequencyDistribution frequencyDistributionInPost = findTechnologyKeywordsInPost(post);
             frequencyDistribution = frequencyDistribution.merge(frequencyDistributionInPost);
         }
-        return frequencyDistribution;
+
+        analyzedDocument = new AnalyzedDocument(frequencyDistribution, new Date(), new Date());
+        return analyzedDocument;
     }
 
     private FrequencyDistribution findTechnologyKeywordsInPost(Post post) {
@@ -37,7 +40,7 @@ public class TechnologyKeywordsAnalyzer implements DocumentAnalyzer {
 
     private FrequencyDistribution extractTechnologyKeywordsInBody(String body) {
         FrequencyDistribution frequencyDistribution = new FrequencyDistribution();
-        for(String word: body.split("\\s+")) {
+        for (String word : body.split("\\s+")) {
             if (isATechnologyKeyWord(word)) {
                 long newCount = findNewCount(frequencyDistribution, word);
                 frequencyDistribution.put(word, new AtomicLong(newCount));
